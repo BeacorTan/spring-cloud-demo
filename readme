@@ -49,5 +49,6 @@ eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.inst
 ######################################  eureka  ##################################################
 
 
+jdk自动调度
 ScheduledExecutorService
 
