@@ -1,0 +1,16 @@
+server:
+  port: 8085
+
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url: {'defaultZone':'http://peer1:8084/eureka/'}
+    #service-url: {'defaultZone':'http://${eureka.instance.hostname}:${server.port}/eureka/'}
+spring:
+  application:
+    name: registryCenter
+
+

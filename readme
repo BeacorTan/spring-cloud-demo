@@ -1,0 +1,53 @@
+## 服务端口 使用java -jar 启动时  加--server.port也直接启动指定端口，例如：java -jar spring-boot.jar --server.port=8888#
+server:
+  port: 8089
+
+## 服务名称 也可通过启动参数  --name=<name>#
+spring:
+  application:
+    name: spring-boot-demo
+
+#对应哪套环境配置，多配制环境文件名满足：application-{profile}.<yml>||<properties>
+#spring.profiles.active: dev对应的是application-dev.yml
+spring.profiles.active: dev
+
+
+# 设置management.security.enabled=false访问spring-boot端点不需要授权，直接访问即可
+java -jar spring-boot-1.0-SNAPSHOT.jar --management.security.enabled=false
+
+
+######################################  eureka  ##################################################
+eureka:
+  instance:
+    #设置为false不往eureka注册，默认true
+    register-with-eureka: false
+    #设置为false不检索服务，默认true
+    fetch-registry: false
+
+
+
+##Dalston.SR4 版本
+eureka.client.service-url={'defaultZone':'http://registryCenter:8084/eureka/'}
+## Camden.SR3
+eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+
+##引入spring-cloud-starter-ribbon包，切记要排除httpclient包冲突，重要！！重要！！重要！！，否则无法启动服务
+
+##服务续约(Renew)
+##eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒。
+##eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒。
+
+#若希望修改缓存清单的更新时间，可以通过 eureka.client.registry-fetch-interval-seconds =30参数进行修改，该参数默认值为30, 单位为秒
+
+##由于本地调试很容易触发注册中心的保护机制， 这会使得注册中心维护的服务实例不那么准确。 所以， 我们在本地进行开发的时候可以使用
+-eureka.server.enable-self-preservation= false参数来关闭保护机 制， 以确保注册中心可以将不可用的实例正确剔除。
+
+
+eureka服务端配置信息：EurekaServerConfigBean，配置信息以eureka.server为前缀
+eureka客户端配置信息：EurekaClientConfigBean，配置信息以eureka.client为前缀
+eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.instance为前缀
+######################################  eureka  ##################################################
+
+
+ScheduledExecutorService
+
