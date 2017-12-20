@@ -36,7 +36,7 @@ hs_err_pid*
 .idea/vcs.xml
 .idea/workspace.xml
 */target/
-spring-cloud-eureka/src/test/
-spring-riboon-consumer/src/test/
-springboot/src/main/resources/static/
-springboot/src/main/resources/templates/
+#spring-cloud-eureka/src/test/
+#spring-riboon-consumer/src/test/
+#springboot/src/main/resources/static/
+#springboot/src/main/resources/templates/
