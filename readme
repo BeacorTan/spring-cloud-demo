@@ -32,11 +32,9 @@ eureka:
     #设置为false不检索服务，默认true
     fetch-registry: false
 
-
-
-##Dalston.SR4 版本
+##Dalston.SR4 版本eureka.client.service-url配置
 eureka.client.service-url={'defaultZone':'http://registryCenter:8084/eureka/'}
-## Camden.SR3
+## Camden.SR3 版本eureka.client.service-url配置
 eureka.client.service-url.defaultZone=http://discovery:8761/eureka
 
 ##引入spring-cloud-starter-ribbon包，切记要排除httpclient包冲突，重要！！重要！！重要！！，否则无法启动服务
@@ -47,8 +45,8 @@ eureka.client.service-url.defaultZone=http://discovery:8761/eureka
 
 #若希望修改缓存清单的更新时间，可以通过 eureka.client.registry-fetch-interval-seconds =30参数进行修改，该参数默认值为30, 单位为秒
 
-##由于本地调试很容易触发注册中心的保护机制， 这会使得注册中心维护的服务实例不那么准确。 所以， 我们在本地进行开发的时候可以使用
--eureka.server.enable-self-preservation= false参数来关闭保护机 制， 以确保注册中心可以将不可用的实例正确剔除。
+##由于本地调试很容易触发注册中心的保护机制， 这会使得注册中心维护的服务实例不那么准确。 所以，我们在本地进行开发的时候可以使用
+-eureka.server.enable-self-preservation= false参数来关闭保护机制，以确保注册中心可以将不可用的实例正确剔除。
 
 
 eureka服务端配置信息：EurekaServerConfigBean，配置信息以eureka.server为前缀
@@ -57,6 +55,6 @@ eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.inst
 ######################################  eureka  ##################################################
 
 
-jdk自动调度
+jdk自带调度
 ScheduledExecutorService
 
