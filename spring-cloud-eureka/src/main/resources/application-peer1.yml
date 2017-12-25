@@ -7,8 +7,8 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: false
-    service-url: {'defaultZone':'http://peer2:8085/eureka/,http://peer1:8084/eureka/'}
-#    service-url: {'defaultZone':'http://${eureka.instance.hostname}:${server.port}/eureka/'}
+#    service-url: {'defaultZone':'http://peer2:8085/eureka/,http://peer1:8084/eureka/'}
+    service-url: {'defaultZone':'http://${eureka.instance.hostname}:${server.port}/eureka/'}
 spring:
   application:
     name: registryCenter

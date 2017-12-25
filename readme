@@ -1,4 +1,4 @@
-#################工程描述：该工程包含spring cloud微服务组件Demo、MongoDB Demo#################
+#################工程描述：该工程包含spring cloud微服务组件Demo、MongoDB Demo(MongoDBTest.java)#################
 #工程搭建参考文档《Spring Cloud微服务实战》
 
 
@@ -57,4 +57,7 @@ eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.inst
 
 jdk自带调度
 ScheduledExecutorService
+
+
+
 
