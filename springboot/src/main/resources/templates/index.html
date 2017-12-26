@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 
     <meta charset="UTF-8"/>
     <title></title>
 
-    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="/css/index.css" />-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/css/index.css}"/>
 </head>
 
 <body>
-
+<!--<p th:text="${path}"></p>-->
 <div class="index_logo"><img src="/img/20171225104520.jpg"/></div>
 <p>上海东冠健康用品股份有限公司出品</p>
 <div class="saomaoshuoming"><img

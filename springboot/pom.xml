@@ -46,6 +46,14 @@
             <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- 二维码 https://mvnrepository.com/artifact/org.vaadin.addons/qrcode -->
+
+        <dependency>
+            <groupId>QRCode</groupId>
+            <artifactId>QRCode</artifactId>
+            <version>2.1</version>
+        </dependency>
     </dependencies>
 
     <build>
