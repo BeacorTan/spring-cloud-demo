@@ -51,6 +51,7 @@ public class HelloController {
 
     /**
      * 生成带logo的二维码
+     *
      * @Params:[request, response]
      * @Return:void
      * @Author BoSongsh
@@ -96,7 +97,6 @@ public class HelloController {
                         graphics.fillRect(j * 3 + 2, i * 3 + 2, 3, 3);
                     }
                 }
-
             }
         }
         //得到logo的绝对路径
@@ -141,6 +141,7 @@ public class HelloController {
             imgY = (qrcodeHeight - imgHeight) / 2;
         }
 
+        // logo填充在二维码上
         graphics.drawImage(image, imgX, imgY, null);//绘制到画布中
 
         graphics.dispose();
@@ -157,22 +158,12 @@ public class HelloController {
     @RequestMapping("generateFilletPicture")
     public void generateFilletPicture(HttpServletResponse response) {
         try {
-
-//            String path = "static/img/logo.gif";
-//            // 获取classpath路径
-//            ClassLoader classLoader = getClass().getClassLoader();
-//            URL url = classLoader.getResource(path);
-//            File srcImageFile = new File(url.getFile());
-//            BufferedImage bi1 = ImageIO.read(srcImageFile);
-            int width=200;
-            int height=300;
-
-
+            int width = 200;
+            int height = 230;
             // 根据需要是否使用 BufferedImage.TYPE_INT_ARGB
-            BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
             Ellipse2D.Double shape = new Ellipse2D.Double(0, 0, width, height);
-
             Graphics2D g2 = image.createGraphics();
             image = g2.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.TRANSLUCENT);
             g2 = image.createGraphics();
@@ -186,8 +177,104 @@ public class HelloController {
             int cornerRadius = 10;
             g2.fillRoundRect(0, 0, width, height, cornerRadius, cornerRadius);
             g2.setComposite(AlphaComposite.SrcIn);
-            //g2.drawImage(bi1, 0, 0, width, height, null);
+            // 画布背景颜色
+            g2.setBackground(Color.WHITE);
+
+            // 文字颜色
+            g2.setColor(Color.BLACK);
+            Font font = new Font("宋体", Font.BOLD, 16);
+
+            g2.setFont(font);
+            // 计算文字长度，计算居中的x点坐标
+            FontMetrics fm = g2.getFontMetrics(font);
+            String headText = "刮开涂层 验证真伪";
+            int textWidth = fm.stringWidth(headText);
+            int textHeight = fm.getHeight();
+            g2.drawString(headText, (width - textWidth) / 2, textHeight + 1);
+
+            String text = "00001 00002";
+            textWidth = fm.stringWidth(text);
+            g2.drawString(text, (width - textWidth) / 2, height - textHeight);
+
+
+            String qrCodeContent = "http://172.26.182.189:8081/index.html";
+            byte[] bstr = new byte[0];
+            try {
+                bstr = qrCodeContent.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            // 设置二维码
+            Qrcode qrcode = new Qrcode();
+            //设置二维码排错率，可选L(7%) M(15%) Q(25%) H(30%)，排错率越高可存储的信息越少，但对二维码清晰度的要求越小
+            qrcode.setQrcodeErrorCorrect('M');
+            //N代表数字,A代表字符a-Z,B代表其他字符
+            qrcode.setQrcodeEncodeMode('B');
+            //版本1为21*21矩阵，版本每增1，二维码的两个边长都增4；所以版本7为45*45的矩阵；最高版本为是40，是177*177的矩
+            int version = 7;
+            qrcode.setQrcodeVersion(version);
+            //根据版本计算尺寸
+            int imgSize = 67 + 12 * (version - 1);
+            //g2.clearRect(10, textHeight * 2, imgSize, imgSize);// x, y 轴; 二维码的图像的宽 高
+            g2.setColor(Color.BLACK);
+            // 设置偏移量 不设置可能导致解析出错
+            int pixoff = (width - imgSize) / 2;
+            if (bstr.length > 0 && bstr.length < 123) {
+                boolean[][] b = qrcode.calQrcode(bstr);
+                for (int i = 0; i < b.length; i++) {
+                    for (int j = 0; j < b.length; j++) {
+                        if (b[j][i]) {
+                            g2.fillRect(j * 3 + pixoff, i * 3 + pixoff, 3, 3);
+                        }
+                    }
+                }
+            }
+
+
+            String path = "static/img/logo.gif";
+            Image imageLogo = null;//二维码中间的logo
+            try {
+                // 获取classpath路径
+                ClassLoader classLoader = getClass().getClassLoader();
+                URL url = classLoader.getResource(path);
+                System.out.println(url.getFile());
+                imageLogo = ImageIO.read(new File(url.getFile()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // 画布坐标，在二维码中的开始坐标x:50，y:50
+            int imgX = 0;
+            int imgY = 0;
+            if (width == height) {
+                int imgWidth = imageLogo.getWidth(new ImageObserver() {
+                    public boolean imageUpdate(Image image, int i, int i1, int i2, int i3, int i4) {
+                        return false;
+                    }
+                });
+                imgX = (width - imgWidth) / 2;
+                imgY = imgX;
+            } else {
+                int imgWidth = imageLogo.getWidth(new ImageObserver() {
+                    public boolean imageUpdate(Image image, int i, int i1, int i2, int i3, int i4) {
+                        return false;
+                    }
+                });
+                int imgHeight = imageLogo.getHeight(new ImageObserver() {
+                    public boolean imageUpdate(Image image, int i, int i1, int i2, int i3, int i4) {
+                        return false;
+                    }
+                });
+                imgX = (width - imgWidth) / 2;
+                imgY = (height - imgHeight) / 2;
+            }
+
+            // logo填充在二维码上
+            g2.drawImage(imageLogo, imgX, imgY - textHeight, null);//绘制到画布中
+
             g2.dispose();
+
             ImageIO.write(image, "png", response.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
