@@ -16,10 +16,11 @@ import org.springframework.context.annotation.ComponentScan;
  * 除非和*application类放在同包【同目录】下
  */
 @ComponentScan(value = "com.spring.boot.demo.*")
+// 此注解表示该服务为eureka客户端
 @EnableDiscoveryClient
 public class SpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootApplication.class,args);
+        SpringApplication.run(SpringBootApplication.class, args);
     }
 }

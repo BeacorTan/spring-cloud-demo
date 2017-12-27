@@ -1,0 +1,4 @@
+1、此module包含SpringBoot Demo【HelloController.hello()】、手机页面【代码：HelloController.index()、页面：index.html】、二维码生成【QRCodeController.generateFilletPicture()】
+2、二维码生成依赖QRCode.jar包，此包maven中央仓库上没有，必须手动install
+maven构建到本地仓库命令（cd进入到QRCode.jar所在目录）：
+mvn install:install-file -Dfile=D:\QRCode.jar -DgroupId=QRCode -DartifactId=QRCode -Dversion=2.1 -Dpackaging=jar
