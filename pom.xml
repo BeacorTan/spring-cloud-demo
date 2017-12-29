@@ -11,7 +11,7 @@
     <modules>
         <module>springboot</module>
         <module>spring-cloud-eureka</module>
-        <module>spring-riboon-consumer</module>
+        <module>spring-ribbon-consumer</module>
     </modules>
 
     <properties>
