@@ -1,0 +1,1 @@
+1、LoadBalancerInterceptor对所有请求进行拦截，请求交给LoadBalancerClient处理
