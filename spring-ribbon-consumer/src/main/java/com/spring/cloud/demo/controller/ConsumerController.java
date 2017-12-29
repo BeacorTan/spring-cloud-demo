@@ -1,10 +1,10 @@
 package com.spring.cloud.demo.controller;
 
+import com.spring.cloud.demo.service.IHelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author BoSongsh
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class ConsumerController {
 
     @Autowired
-    RestTemplate restTemplate;
+    IHelloService helloService;
 
     /**
      * 不指定method的请求方式，spring对post和get都支持
@@ -24,6 +24,6 @@ public class ConsumerController {
      */
     @RequestMapping(value = "/helloConsumer", method = RequestMethod.GET)
     public String helloConsumer() {
-        return restTemplate.getForEntity("http://BOOT-DEMO/hello", String.class).getBody();
+        return helloService.helloService();
     }
 }

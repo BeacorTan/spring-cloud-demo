@@ -4,9 +4,11 @@ server:
 spring:
   thymeleaf:
     prefix: 'classpath:/templates/'
-thymeleaf:
   application:
     name: boot-demo
+#thymeleaf:
+#  application:
+#    name: boot-demo
 eureka:
   client:
 #    service-url: {'defaultZone':'http://registryCenter:8084/eureka/'}

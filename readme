@@ -3,8 +3,50 @@
 
 
 1、工程启动顺序
-  1.1 spring-cloud-eureka 【服务注册中心，必须最先启动否则服务实现客户端负载均衡】
-  1.2
+  1.1 spring-cloud-eureka 【如果客户端使用eureka服务注册中心，必须最先启动否则服务实现客户端负载均衡】
+  1.2 启动客户端服务srpingboot、spring-ribbon-consumer、。。。。
+
+
+2、eureka服务注册与发现中心
+  2.1 常用配置
+    eureka:
+      instance:
+        #设置为false不往eureka注册，默认true
+        register-with-eureka: false
+        #设置为false不检索服务，默认true
+        fetch-registry: false
+
+    ##Dalston.SR4 版本eureka.client.service-url配置
+    eureka.client.service-url={'defaultZone':'http://registryCenter:8084/eureka/'}
+    ## Camden.SR3 版本eureka.client.service-url配置
+    eureka.client.service-url.defaultZone=http://discovery:8761/eureka
+
+  2.2 引入spring-cloud-starter-ribbon包，切记要排除httpclient包冲突，重要！！重要！！重要！！，否则无法启动服务
+
+  2.3 服务续约(Renew)
+     ##eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒。
+     ##eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒。
+
+  2.4 若希望修改缓存清单的更新时间，可以通过 eureka.client.registry-fetch-interval-seconds=30参数进行修改，该参数默认值为30, 单位为秒
+
+  2.5 由于本地调试很容易触发注册中心的保护机制， 这会使得注册中心维护的服务实例不那么准确。 所以，我们在本地进行开发的时候可以使用
+    eureka.server.enable-self-preservation= false 参数来关闭保护机制，以确保注册中心可以将不可用的实例正确剔除。
+    eureka服务端配置信息：EurekaServerConfigBean，配置信息以eureka.server为前缀
+    eureka客户端配置信息：EurekaClientConfigBean，配置信息以eureka.client为前缀
+    eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.instance为前缀
+
+
+3、客户端负载均衡
+ 3.1 客户端配置类 CommonClientConfigKey，此配置一般在没有服务治理框架下使用，格式<client>.ribbon.<key>=<value>,client为服务名(hello-service)示例如下：
+     hello-service.ribbon.listOfServers=localhost:8001,localhost:8002, localhost:8003
+ 3.2 ribbon.eureka.enabled=false 禁用通过eureka维护实例清单，回归到使用 <client>.ribbon.listOfServers参数配置的方式来实现
+ 3.3 服务重试机制配置类 LoadBalancerRetryProperties用来开启服务重试
+
+
+4、服务容错保护 Spring Cloud Hystrix[hɪst'rɪks]
+ 4.1
+
+
 
 ## 服务端口 使用java -jar 启动时加--server.port也直接启动指定端口，例如：java -jar spring-boot.jar --server.port=8888
 server:
@@ -24,35 +66,6 @@ spring.profiles.active: dev
 java -jar spring-boot-1.0-SNAPSHOT.jar --management.security.enabled=false
 
 
-######################################  eureka  ##################################################
-eureka:
-  instance:
-    #设置为false不往eureka注册，默认true
-    register-with-eureka: false
-    #设置为false不检索服务，默认true
-    fetch-registry: false
-
-##Dalston.SR4 版本eureka.client.service-url配置
-eureka.client.service-url={'defaultZone':'http://registryCenter:8084/eureka/'}
-## Camden.SR3 版本eureka.client.service-url配置
-eureka.client.service-url.defaultZone=http://discovery:8761/eureka
-
-##引入spring-cloud-starter-ribbon包，切记要排除httpclient包冲突，重要！！重要！！重要！！，否则无法启动服务
-
-##服务续约(Renew)
-##eureka.instance.lease-renewal-interval-in-seconds 参数用于定义服务续约任务的调用间隔时间，默认为30秒。
-##eureka.instance.lease-expiration-duration-in-seconds参数用于定义服务失效的时间，默认为90秒。
-
-#若希望修改缓存清单的更新时间，可以通过 eureka.client.registry-fetch-interval-seconds =30参数进行修改，该参数默认值为30, 单位为秒
-
-##由于本地调试很容易触发注册中心的保护机制， 这会使得注册中心维护的服务实例不那么准确。 所以，我们在本地进行开发的时候可以使用
--eureka.server.enable-self-preservation= false参数来关闭保护机制，以确保注册中心可以将不可用的实例正确剔除。
-
-
-eureka服务端配置信息：EurekaServerConfigBean，配置信息以eureka.server为前缀
-eureka客户端配置信息：EurekaClientConfigBean，配置信息以eureka.client为前缀
-eureka实例配置信息：EurekaInstanceConfigBean，配置信息以eureka.instance为前缀
-######################################  eureka  ##################################################
 
 
 jdk自带调度
